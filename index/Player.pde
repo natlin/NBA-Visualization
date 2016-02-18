@@ -40,11 +40,11 @@ public class Player {
   
   public void draw() {
     stroke(0);
-    strokeWeight(8);
+    strokeWeight(scaleFactor*(8));
     fill(dispColor);
     //point(xpos*(400.0/94) + 54, ypos*(225.0/50) + 150);
     //ellipse(xpos*(400.0/94) + 50, ypos*(225.0/50) + 150, 5, 5);
     //point(xpos*(423.0/94) + 54, ypos*(225.0/50) + 150);//drawcourt2
-    ellipse(xpos*16 + xOffset, ypos*16 + yOffset, 20, 20);
+    ellipse(scaleFactor*(xpos*16 + xOffset), scaleFactor*(ypos*16 + yOffset), scaleFactor*(20), scaleFactor*(20));
   }
 }
