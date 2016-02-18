@@ -14,6 +14,7 @@ Table teamTable;
 Table playerTable;
 Table gamesTable;
 Table oneEventTable;
+Table colorTable;
 Iterator eventCount;
 ArrayList<String> gameEvents;
 
@@ -44,11 +45,11 @@ ControlP5 cp5;
 
 void setup()
 {
-  frameRate(50);
+  //frameRate(150);
   size(1600, 900);
   background(255, 255, 255);
   Ball = new Player();
-  drawCourt2();
+  drawCourt();
   loadTeam();
   loadPlayers();
   loadGames();
@@ -112,9 +113,9 @@ void draw()
       Team tempTeam = Teams.get(teamID);
       Player tempPlayer = tempTeam.Players.get(row.getInt(PLAYERID));
       tempPlayer.update(row.getFloat(XPOS), row.getFloat(YPOS));
-      if(teamRed == teamID){
+      /*if(teamRed == teamID){
         tempPlayer.changeColor();
-      }
+      }*/
       tempPlayer.draw();
     }
   }
@@ -150,8 +151,8 @@ void drawCourt(){ // offset
   rect (scaleFactor*(0+xOffset), scaleFactor*(304 + yOffset), scaleFactor*(304), scaleFactor*(192));                  // left rectangle/key
   rect (scaleFactor*(1504+xOffset-304), scaleFactor*(304 + yOffset), scaleFactor*(304), scaleFactor*(192));                // right rectangle/key
   fill (0);                        // net color 
-  ellipse(scaleFactor*(84+xOffset), scaleFactor*(400 + yOffset), scaleFactor*(30), scaleFactor*(30));    // left net
-  ellipse (scaleFactor*(1504+xOffset - 84), scaleFactor*(400 + yOffset), scaleFactor*(30), scaleFactor*(30));      // right net
+  ellipse(scaleFactor*(84+xOffset), scaleFactor*(400 + yOffset), scaleFactor*(24), scaleFactor*(24));    // left net
+  ellipse (scaleFactor*(1504+xOffset - 84), scaleFactor*(400 + yOffset), scaleFactor*(24), scaleFactor*(24));      // right net
   fill (255,233,92);                     // fill
   arc (scaleFactor*(305+xOffset), scaleFactor*(400 + yOffset), scaleFactor*(192), scaleFactor*(192), -HALF_PI, HALF_PI);    // tipoff free throw area left
   arc (scaleFactor*(1504+xOffset-304), scaleFactor*(400 + yOffset), scaleFactor*(192), scaleFactor*(192), HALF_PI, PI+HALF_PI);      // tipoff  free throw right
@@ -160,14 +161,16 @@ void drawCourt(){ // offset
 Hashtable<Integer, Team> Teams = new Hashtable<Integer, Team>();
 
 void loadTeam() {
-  
+  int i=0;
   teamTable = loadTable("data/team.csv", "header");
+  colorTable = loadTable("color.csv", "header");
 
   for (TableRow row : teamTable.rows()) {
-    
-    Team tempTeam = new Team(row);
+    TableRow colorRow = colorTable.getRow(i);
+    Team tempTeam = new Team(row, colorRow.getString("color1"), colorRow.getString("color2"));
     Teams.put(row.getInt("teamid"), tempTeam);
-    
+    //println("team: " + row.getString("abbreviation") + " color1: " + colorRow.getString("color1")+ " color2: " + colorRow.getString("color2"));
+    i++;
   }
   
 }
@@ -180,7 +183,10 @@ void loadPlayers() {
   for (TableRow row : playerTable.rows()) {
     
     Team tempTeam = Teams.get(row.getInt("teamid"));
-    tempTeam.addPlayer(row);
+    color tempDispColor = tempTeam.dispColor;
+    color tempStrokeColor = tempTeam.strokeColor;
+    
+    tempTeam.addPlayer(row, tempDispColor, tempStrokeColor);
     
   }
   
