@@ -64,17 +64,6 @@ void setup()
   cp5 = new ControlP5(this);
   hs1 = new HScrollbar(0, height - 20, width, 30, 10);
   
-  //List l = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h");
-  cp5.addScrollableList("games")
-    .setPosition(10, 400)
-    .setSize(360, 100)
-    .setBarHeight(20)
-    .setItemHeight(20)
-    //.addItems(l)
-    // .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
-    ;
-  cp5.get(ScrollableList.class, "games").close();
-  
   MenuList m = new MenuList( cp5, "menu", 360, 368 );
   
   m.setPosition(10, 10);
@@ -86,6 +75,36 @@ void setup()
     
     m.addItem(makeItem(headline, subline, copy, loadImage("/icons/" + headline + "2.png")));
   }
+
+  cp5.addScrollableList("games")
+     .setPosition(10, 400)
+     .setSize(360, 100)
+     .setBarHeight(20)
+     .setItemHeight(20)
+     //.addItems(l)
+     //.setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
+     ;
+  cp5.get(ScrollableList.class, "games").close();
+  
+  PImage[] imgs = {loadImage("icons/button_a.png"),loadImage("icons/button_b.png"),loadImage("icons/button_c.png"),loadImage("icons/button_d.png")};
+  cp5.addButton("play")
+     //.setValue(128)
+     .setPosition(10,522)
+     .setImages(imgs)
+     .setSwitch(true)
+     .setOff()
+     .updateSize()
+     ;
+     
+  PImage[] imgs2 = {loadImage("icons/next_a.png"),loadImage("icons/next_b.png"),loadImage("icons/next_c.png")};
+  cp5.addButton("nextEvent")
+     //.setValue(1)
+     .setPosition(82,522)
+     .setImages(imgs2)
+     //.setSwitch(true)
+     //.setOff()
+     .updateSize()
+     ;
   
 }
 
@@ -235,7 +254,6 @@ void listFilesForFolder(final File folder) {
 void loadOneGame(int id){  
   //sketchPath("/data/games/0041400101");
   //gameid = 41400101;
-  moment = 0;
   gameid = id;
   final File folder = new File(sketchPath("/data/games/00" + gameid + "/"));
   listFilesForFolder(folder);
@@ -244,6 +262,7 @@ void loadOneGame(int id){
 }
 
 void loadOneEvent() {
+  moment = 0;
   /* Test for FreeThrow Right
   eventCount.next();
   eventCount.next();

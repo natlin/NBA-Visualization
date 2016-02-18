@@ -16,28 +16,28 @@ void dropdown(int n) {
   
 }
 
-void keyPressed() {
+/*void keyPressed() {
   switch(key) {
     case('1'):
-    /* make the ScrollableList behave like a ListBox */
+    // make the ScrollableList behave like a ListBox
     cp5.get(ScrollableList.class, "games").setType(ControlP5.LIST);
     break;
     case('2'):
-    /* make the ScrollableList behave like a DropdownList */
+    // make the ScrollableList behave like a DropdownList
     cp5.get(ScrollableList.class, "games").setType(ControlP5.DROPDOWN);
     break;
     case('3'):
-    /*change content of the ScrollableList */
+    //change content of the ScrollableList
     List l = Arrays.asList("a-1", "b-1", "c-1", "d-1", "e-1", "f-1", "g-1", "h-1", "i-1", "j-1", "k-1");
     cp5.get(ScrollableList.class, "games").setItems(l);
     break;
     case('4'):
-    /* remove an item from the ScrollableList */
+    // remove an item from the ScrollableList
     cp5.get(ScrollableList.class, "games").removeItem("k-1");
     break;
     case('5'):
-    /* clear the ScrollableList */
+    // clear the ScrollableList
     cp5.get(ScrollableList.class, "games").clear();
     break;
   }
-}
+}*/

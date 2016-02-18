@@ -11,7 +11,7 @@ Map<String, Object> makeItem(String theHeadline, String theSubline, String theCo
 }
 
 void menu(int i) {
-  println("got some menu event from item with index "+i);
+  println("Selected team from item with index "+i);
 }
 
 public void controlEvent(ControlEvent theEvent) {
@@ -36,6 +36,7 @@ public void controlEvent(ControlEvent theEvent) {
   }
   if(theEvent.isFrom("games")){
     //println(l.get((int)theEvent.getValue()));
+    cp5.get(Button.class, "play").setOff();
     loadOneGame(Integer.parseInt(l.get((int)theEvent.getValue())));
   }
 }
