@@ -17,7 +17,26 @@ void menu(int i) {
 public void controlEvent(ControlEvent theEvent) {
   if(theEvent.isFrom("menu")){
     Map m = ((MenuList)theEvent.getController()).getItem(int(theEvent.getValue()));
-    println("got a menu event from item : "+m);
+    //println("got a menu event from item : "+m.get("copy"));
+    //println("got a menu event from item : "+m.get("copy"));
+    /*for(int i = 0; i < gameEvents.size(); i++){
+      gameEvents.get(i);
+    }*/
+    isPlaying = false;
+    cp5.get(ScrollableList.class, "games").clear();
+    int matchTeam = Integer.parseInt((String)m.get("copy"));
+    l.clear();
+    for( TableRow row : gamesTable.rows()) {
+      if(row.getInt("hometeamid") == matchTeam || row.getInt("visitorteamid") == matchTeam){
+        l.add(row.getString("gameid"));
+      }
+    }
+    cp5.get(ScrollableList.class, "games").addItems(l);
+    cp5.get(ScrollableList.class, "games").open();
+  }
+  if(theEvent.isFrom("games")){
+    //println(l.get((int)theEvent.getValue()));
+    loadOneGame(Integer.parseInt(l.get((int)theEvent.getValue())));
   }
 }
 

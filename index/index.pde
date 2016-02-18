@@ -17,6 +17,7 @@ Table oneEventTable;
 Table colorTable;
 Iterator eventCount;
 ArrayList<String> gameEvents;
+List<String> l;
 
 int maxMoment = -1;
 int gameid = 0;
@@ -38,6 +39,8 @@ int GAMECLOCK = 7;
 int SHOTCLOCK = 8;
 int PERIOD = 9;
 
+boolean isPlaying = false;
+
 PFont f1, f2;
 
 HScrollbar hs1;
@@ -53,23 +56,24 @@ void setup()
   loadTeam();
   loadPlayers();
   loadGames();
-  loadOneGame();
+  //loadOneGame();
   f1 = createFont("Helvetica", 20);
   f2 = createFont("Helvetica", 12);
   
+  l = new ArrayList<String>();
   cp5 = new ControlP5(this);
   hs1 = new HScrollbar(0, height - 20, width, 30, 10);
   
-  List l = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h");
-  cp5.addScrollableList("dropdown")
-    .setPosition(1304, 100)
-    .setSize(200, 100)
+  //List l = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h");
+  cp5.addScrollableList("games")
+    .setPosition(10, 400)
+    .setSize(360, 100)
     .setBarHeight(20)
     .setItemHeight(20)
-    .addItems(l)
+    //.addItems(l)
     // .setType(ScrollableList.LIST) // currently supported DROPDOWN and LIST
     ;
-  cp5.get(ScrollableList.class, "dropdown").close();
+  cp5.get(ScrollableList.class, "games").close();
   
   MenuList m = new MenuList( cp5, "menu", 360, 368 );
   
@@ -119,7 +123,7 @@ void draw()
       tempPlayer.draw();
     }
   }
-  if(!hs1.isLocked()) {
+  if(!hs1.isLocked() && isPlaying) {
     moment++;
     hs1.moveToMoment();
   }
@@ -228,9 +232,11 @@ void listFilesForFolder(final File folder) {
   }
 }
 
-void loadOneGame(){  
+void loadOneGame(int id){  
   //sketchPath("/data/games/0041400101");
-  gameid = 41400101;
+  //gameid = 41400101;
+  moment = 0;
+  gameid = id;
   final File folder = new File(sketchPath("/data/games/00" + gameid + "/"));
   listFilesForFolder(folder);
   eventCount = gameEvents.iterator();
@@ -265,8 +271,9 @@ void loadOneEvent() {
   eventCount.next();
   eventCount.next();*/
   
-  //oneEventTable = loadTable("/data/games/00" + gameid + "/" + (String)eventCount.next());
-  oneEventTable = loadTable("data/games/0041400101/2.csv");
+  oneEventTable = loadTable("/data/games/00" + gameid + "/" + (String)eventCount.next());
+  //oneEventTable = loadTable("data/games/0041400101/2.csv");
+  isPlaying = true;
   TableRow row = oneEventTable.getRow(oneEventTable.getRowCount() - 1);
   maxMoment = row.getInt(MOMENT);
 }
