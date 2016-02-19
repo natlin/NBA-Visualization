@@ -50,4 +50,28 @@ public class Team {
       tempPlayer.selectedPlayer();
     }
   }
+  
+  public Double[] checkClosestPlayer(){
+    int maxPlayerID = 0;
+    double minDistance = 8000;
+    Enumeration<Integer> enumKey = Players.keys();
+    while(enumKey.hasMoreElements()) {
+      Player tempPlayer = Players.get(enumKey.nextElement());
+      double temp;
+      try{
+        temp = tempPlayer.distanceToBall.get(moment);
+      }
+      catch(Exception e){
+        continue;
+      }
+      if(temp < minDistance){
+        minDistance = temp;
+        maxPlayerID = tempPlayer.playerid;
+      }
+    }
+    Double retVal[] = new Double[2];
+    retVal[0] = (double)maxPlayerID;
+    retVal[1] = minDistance;
+    return retVal;
+  }
 }

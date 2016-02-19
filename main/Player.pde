@@ -14,6 +14,7 @@ public class Player {
   
   Hashtable<Integer, Double> distanceTraveled;
   Hashtable<Integer, Double> averageSpeed;
+  Hashtable<Integer, Double> distanceToBall;
   
   public Player() {
     teamid = -1;
@@ -23,6 +24,7 @@ public class Player {
     strokeColor = color(220,153,51);
     firstname = "Basket";
     lastname = "Ball";
+    distanceToBall = new Hashtable<Integer, Double>();
   }
   
   public Player(TableRow row) {
@@ -38,6 +40,7 @@ public class Player {
     dispColor = color(0,255,0);
     distanceTraveled = new Hashtable<Integer, Double>();
     averageSpeed = new Hashtable<Integer, Double>();
+    distanceToBall = new Hashtable<Integer, Double>();
   }
   
   public Player(TableRow row, color dispColor, color strokeColor) {
@@ -54,9 +57,15 @@ public class Player {
     this.strokeColor = strokeColor;
     distanceTraveled = new Hashtable<Integer, Double>();
     averageSpeed = new Hashtable<Integer, Double>();
+    distanceToBall = new Hashtable<Integer, Double>();
   }
   
   public void update(float xpos, float ypos) {
+    this.xpos = xpos;
+    this.ypos = ypos;
+  }
+  
+  public void ballPreprocess(float xpos, float ypos, int moment){
     this.xpos = xpos;
     this.ypos = ypos;
   }
@@ -68,6 +77,8 @@ public class Player {
   float gameClockMax;
   
   public void preprocess(float gameClock, float xpos, float ypos, int moment) {
+    
+    //total distance, starts calculating immediately
     double calcDistance;
     if(moment == 0){
       gameClockMax = gameClock;
@@ -82,6 +93,8 @@ public class Player {
     totDistance = totDistance + calcDistance;
     prevY = ypos;
     prevX = xpos;
+    
+    //avg speed, starts calculating when gameClock starts
     if((gameClockMax - gameClock) < 1){
       averageSpeed.put(moment, (double)0);
       totDistanceForAvg = 0;
@@ -90,6 +103,12 @@ public class Player {
       averageSpeed.put(moment, totDistanceForAvg/(gameClockMax - gameClock));
       totDistanceForAvg = totDistanceForAvg + calcDistance;
     }
+    
+    //distanceToBall, starts calculating immediately
+    resultX = Math.abs(ypos - Ball.ypos);
+    resultY = Math.abs(xpos - Ball.xpos);
+    double ballDistance = Math.sqrt((resultY)*(resultY) + (resultX)*(resultX));
+    distanceToBall.put(moment, ballDistance);
   }
   
   public void changeColor() {
@@ -121,8 +140,8 @@ public class Player {
   
   boolean overEvent() {
     //println("mouseX:" + mouseX);
-    if (mouseX > scaleFactor*(xpos*16 + xOffset)-scaleFactor*(10) && mouseX < scaleFactor*(xpos*16 + xOffset)+scaleFactor*(10) &&
-       mouseY > scaleFactor*(ypos*16 + yOffset)-scaleFactor*(10) && mouseY < scaleFactor*(ypos*16 + yOffset)+scaleFactor*(10)) {
+    if (mouseX > scaleFactor*(xpos*16 + xOffset)-scaleFactor*(15) && mouseX < scaleFactor*(xpos*16 + xOffset)+scaleFactor*(15) &&
+       mouseY > scaleFactor*(ypos*16 + yOffset)-scaleFactor*(15) && mouseY < scaleFactor*(ypos*16 + yOffset)+scaleFactor*(15)) {
       return true;
     } else {
       return false;
@@ -137,6 +156,7 @@ public class Player {
     }
     if (mousePressed && over) {
       println("player: " + firstname + " " + lastname);
+      delay(100);
       if(teamid>0){
         displayData.setPlayerStats(this);
       }

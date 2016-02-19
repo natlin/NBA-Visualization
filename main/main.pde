@@ -193,10 +193,31 @@ void draw()
     fill(255,255,255,215);
     rect(385,0,1600,860);
     
+    /*
     imageMode(CENTER);
     image(homeImg, tempXCenter + tempXOffset - 300, tempYCenter + tempYOffset);
     imageMode(CENTER);
     image(visitorImg, tempXCenter + tempXOffset + 300, tempYCenter + tempYOffset);
+    */
+    if(vsScreenCounter > 26){
+      imageMode(CENTER);
+      image(homeImg, tempXCenter + tempXOffset - 260 - (vsScreenCounter - 26)*12, tempYCenter + tempYOffset);
+      imageMode(CENTER);
+      image(visitorImg, tempXCenter + tempXOffset + 260 + (vsScreenCounter - 26)*12, tempYCenter + tempYOffset);
+    }
+    else if(vsScreenCounter > 13){
+      imageMode(CENTER);
+      image(homeImg, tempXCenter + tempXOffset - 260, tempYCenter + tempYOffset);
+      imageMode(CENTER);
+      image(visitorImg, tempXCenter + tempXOffset + 260, tempYCenter + tempYOffset);
+    }
+    else{
+      imageMode(CENTER);
+      image(homeImg, tempXCenter + tempXOffset - 260 - 156 + (vsScreenCounter)*12, tempYCenter + tempYOffset);
+      imageMode(CENTER);
+      image(visitorImg, tempXCenter + tempXOffset + 260 +156- (vsScreenCounter)*12, tempYCenter + tempYOffset);
+    }
+      
     fill(0);
     textAlign(CENTER,CENTER);
     textFont(vsFont);
@@ -330,7 +351,7 @@ void loadOneGame(int id){
   smallVisitorImg = visitorImg.copy();
   smallVisitorImg.resize(0,60);
   vsFont = loadFont("fonts/AgencyFB-Bold-52.vlw");
-  vsScreenCounter = 30;
+  vsScreenCounter = 39;
   loadOneEvent();
 }
 
@@ -368,6 +389,7 @@ void loadOneEvent() {
   for(TableRow row : oneEventTable.rows()){
     int tempTeamID = row.getInt(TEAMID);
     if(tempTeamID<0){
+      Ball.ballPreprocess(row.getFloat(XPOS), row.getFloat(YPOS), row.getInt(MOMENT));
       continue;
     }
     Team tempTeam = Teams.get(tempTeamID);

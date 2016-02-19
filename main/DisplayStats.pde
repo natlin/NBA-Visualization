@@ -5,8 +5,8 @@ public class DisplayStats {
   int period;
   boolean isDispPlayer;
   Player dispPlayer;
-  String homeTeam;
-  String visitorTeam;
+  String homeTeamAbrev;
+  String visitorTeamAbrev;
   String url;
   
   PFont hightech; // Digital Clock Font
@@ -18,6 +18,10 @@ public class DisplayStats {
   
   float gameClockX1;
   float gameClockX2;
+  
+  int closestPlayer;
+  double closestDistance;
+  int closestTeam;
   
   public DisplayStats(){ // constructor
   url = "http://i.cdn.turner.com/nba/nba/.element/img/2.0/sect/statscube/players/large/";
@@ -36,9 +40,45 @@ public class DisplayStats {
     period = row.getInt(PERIOD);
     sec = gameClock % 60;
     minutes = gameClock / 60;
+    
+    //get Closest Player
+    Team tempHTeam = Teams.get(homeTeam);
+    Team tempVTeam = Teams.get(visitorTeam);
+    Double ar[]= tempHTeam.checkClosestPlayer();
+    Double ar2[] = tempVTeam.checkClosestPlayer();
+    if(ar[1] > ar2[1]){
+      closestPlayer = ar2[0].intValue();
+      closestDistance = ar2[1];
+      closestTeam = visitorTeam;
+    }
+    else {
+      closestPlayer = ar[0].intValue();
+      closestDistance = ar[1];
+      closestTeam = homeTeam;
+    }
   }
   
   public void draw() {
+    
+    textAlign(LEFT,TOP);
+    textFont(vsFont,24);
+    if(isDispPlayer){
+      fill(0,90);
+    }
+    else{
+      fill(0);
+    }
+    //String.format("%.3f%n", dispPlayer.distanceTraveled.get(moment));
+    Team nearestTeam = Teams.get(closestTeam);
+    Player nearestPlayer = nearestTeam.Players.get(closestPlayer);
+    //double distance = nearestPlayer.distanceToBall.get(moment);
+    
+    //text("Possession: " + String.format("%.3f", dispPlayer.distanceTraveled.get(moment)), tempXOffset, tempYOffset + scaleFactor*(800) + 10);
+    //text(String.format("%63s","ft"), tempXOffset, tempYOffset + scaleFactor*(800) + 10);
+    text("Possession: " + nearestTeam.abbreviation + "  " + nearestPlayer.firstname + " " + nearestPlayer.lastname+"  "+nearestPlayer.jerseynumber, tempXOffset + tempXCenter + 120, tempYOffset + scaleFactor*(800) + 10);
+    //text(nearestTeam.abbreviation + "  " + nearestPlayer.firstname + " " + nearestPlayer.lastname, tempXOffset, tempYOffset + scaleFactor*(800) + 10 + 24);
+    
+    
     drawGameClock();
     if(isDispPlayer){
       imageMode(CORNERS);
@@ -61,14 +101,25 @@ public class DisplayStats {
       textFont(vsFont,24);
       fill(0);
       //String.format("%.3f%n", dispPlayer.distanceTraveled.get(moment));
-      text("Total Distance Traveled: " + String.format("%.3f", dispPlayer.distanceTraveled.get(moment)), tempXOffset + tempXCenter, tempYOffset + scaleFactor*(800) + 10);
-      text(String.format("%63s","ft"), tempXOffset + tempXCenter, tempYOffset + scaleFactor*(800) + 10);
-      text("Average Speed: " + String.format("%.3f", dispPlayer.averageSpeed.get(moment)), tempXOffset + tempXCenter, tempYOffset + scaleFactor*(800) + 10 + 24);
-      text(String.format("%50s","ft/sec"), tempXOffset + tempXCenter, tempYOffset + scaleFactor*(800) + 10 + 24);
+      text("Total Distance Traveled: " + String.format("%.3f", dispPlayer.distanceTraveled.get(moment)), tempXOffset, tempYOffset + scaleFactor*(800) + 10);
+      text(String.format("%63s","ft"), tempXOffset, tempYOffset + scaleFactor*(800) + 10);
+      
+      //average speed
+      text("Average Speed: " + String.format("%.3f", dispPlayer.averageSpeed.get(moment)), tempXOffset, tempYOffset + scaleFactor*(800) + 10 + 24);
+      text(String.format("%50s","ft/sec"), tempXOffset, tempYOffset + scaleFactor*(800) + 10 + 24);
+      
+      //distance to ball
+      text("Distance to Ball: " + String.format("%.3f", dispPlayer.distanceToBall.get(moment)), tempXOffset, tempYOffset + scaleFactor*(800) + 10 + 48);
+      text(String.format("%52s","ft"), tempXOffset, tempYOffset + scaleFactor*(800) + 10 + 48);
     }
   }
   
   public void setPlayerStats(Player tempPlayer){
+    if(tempPlayer == dispPlayer){
+      isDispPlayer = false;
+      dispPlayer = Ball;
+      return;
+    }
     isDispPlayer = true;
     dispPlayer = tempPlayer;
     webImg = loadImage(url + dispPlayer.firstname.toLowerCase().replaceAll("[^\\p{Alpha}]", "") + "_" + dispPlayer.lastname.toLowerCase().replaceAll("[^\\p{Alpha}]", "") + ".png");
