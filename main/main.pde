@@ -31,6 +31,11 @@ int xOffset =560;
 int yOffset = 200;
 float scaleFactor = 0.75;
 
+float tempXCenter;
+float tempXOffset;
+float tempYCenter;
+float tempYOffset;
+
 int vsScreenCounter = 0;
 
 Player Ball;
@@ -70,6 +75,11 @@ void setup()
   //loadOneGame();
   f1 = createFont("Helvetica", 20);
   f2 = createFont("Helvetica", 12);
+  
+  tempXCenter = scaleFactor*(1504) / 2.0;
+  tempXOffset = scaleFactor*(0 + xOffset);
+  tempYCenter = scaleFactor*(800) / 2.0;
+  tempYOffset = scaleFactor*(0 + yOffset);
   
   l = new ArrayList<String>();
   displayData = new DisplayStats();
@@ -168,11 +178,6 @@ void draw()
     fill(255,255,255,215);
     rect(0,0,1600,900);
     
-    float tempXCenter = scaleFactor*(1504) / 2.0;
-    float tempXOffset = scaleFactor*(0 + xOffset);
-    float tempYCenter = scaleFactor*(800) / 2.0;
-    float tempYOffset = scaleFactor*(0 + yOffset);
-    
     imageMode(CENTER);
     image(homeImg, tempXCenter + tempXOffset - 300, tempYCenter + tempYOffset);
     imageMode(CENTER);
@@ -201,6 +206,9 @@ void drawCourt(){ // offset
   line (scaleFactor*(1504 + xOffset), scaleFactor*(48 + yOffset), scaleFactor*(1504 +xOffset/*48*/- 228), scaleFactor*(48 + yOffset));      // right top line
   fill (12, 129, 200);                  // center circle     
   ellipse (scaleFactor*(752+xOffset), scaleFactor*(400 + yOffset),scaleFactor*(192),scaleFactor*(192));
+  if(homeTeam>0){
+    image(homeImg, scaleFactor*(752+xOffset), scaleFactor*(400 + yOffset));
+  }
   line (scaleFactor*(752+xOffset), scaleFactor*(0 + yOffset), scaleFactor*(752+xOffset/*48*/), scaleFactor*(800 + yOffset));          // center line
   fill (153, 0, 0);                  // Color for outsideKey
   rect (scaleFactor*(0+xOffset), scaleFactor*(272 + yOffset), scaleFactor*(304), scaleFactor*(256));                  // left outside rectangle/key
