@@ -70,7 +70,11 @@ The next event button will move on to the next event inside of the game.
 Reasoning
 ---------
 I fulfilled the requirements of the assignment and the reasoning is as follows:
+
 1. This was fulfilled because you can select an event via the dropdown list and animate it on the basketball court
+
 2. This was fulfilled by displaying the ball possession statistic. You can further see other information about the event by clicking on the players and displaying their personal information. Also, you can see which teams are playing in the event via the splash screen as well as the smaller sized icons underneath the dropdown list
+
 3. This was fulfilled by the slider on the bottom of the screen, allowing you to move your animations and statistics to a particular point of time
+
 4. This was fulfilled by selecting a player. This will display their image, name, jersey number, and position. This also calculates and displays other statistics as well such as their average speed and distance from the ball.
