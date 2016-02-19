@@ -10,12 +10,15 @@ public class Player {
   float ypos;
   color dispColor;
   color strokeColor;
+  boolean over;
   
   public Player() {
-    xpos = 0;
-    ypos = 0;
+    xpos = -1;
+    ypos = -1;
     dispColor = color(255,153,51);
     strokeColor = color(220,153,51);
+    firstname = "Basket";
+    lastname = "Ball";
   }
   
   public Player(TableRow row) {
@@ -26,8 +29,8 @@ public class Player {
     jerseynumber = row.getInt("jerseynumber");
     position = row.getString("position");
     teamid = row.getInt("teamid");
-    xpos = 0;
-    ypos = 0;
+    xpos = -1;
+    ypos = -1;
     dispColor = color(0,255,0);
   }
   
@@ -39,8 +42,8 @@ public class Player {
     jerseynumber = row.getInt("jerseynumber");
     position = row.getString("position");
     teamid = row.getInt("teamid");
-    xpos = 0;
-    ypos = 0;
+    xpos = -1;
+    ypos = -1;
     this.dispColor = dispColor;
     this.strokeColor = strokeColor;
   }
@@ -55,12 +58,35 @@ public class Player {
   }
   
   public void draw() {
+    
     stroke(strokeColor);
     strokeWeight(scaleFactor*(5));
     fill(dispColor);
-    //point(xpos*(400.0/94) + 54, ypos*(225.0/50) + 150);
-    //ellipse(xpos*(400.0/94) + 50, ypos*(225.0/50) + 150, 5, 5);
-    //point(xpos*(423.0/94) + 54, ypos*(225.0/50) + 150);//drawcourt2
     ellipse(scaleFactor*(xpos*16 + xOffset), scaleFactor*(ypos*16 + yOffset), scaleFactor*(20), scaleFactor*(20));
+    selectedPlayer();
+  }
+  
+  boolean overEvent() {
+    //println("mouseX:" + mouseX);
+    if (mouseX > scaleFactor*(xpos*16 + xOffset)-scaleFactor*(10) && mouseX < scaleFactor*(xpos*16 + xOffset)+scaleFactor*(10) &&
+       mouseY > scaleFactor*(ypos*16 + yOffset)-scaleFactor*(10) && mouseY < scaleFactor*(ypos*16 + yOffset)+scaleFactor*(10)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  public void selectedPlayer() {
+    if (overEvent()) {
+      over = true;
+    } else {
+      over = false;
+    }
+    if (mousePressed && over) {
+      println("player: " + firstname + " " + lastname);
+      if(teamid>0){
+        displayData.setPlayerStats(this);
+      }
+    }
   }
 }

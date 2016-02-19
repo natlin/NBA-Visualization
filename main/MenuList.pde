@@ -134,12 +134,12 @@ class MenuList extends Controller<MenuList> {
   }
 
   public void onDrag() {
-    npos += getPointer().dy() * 2;
+    npos -= getPointer().dy() * 2;
     updateMenu = true;
   } 
 
   public void onScroll(int n) {
-    npos += ( n * 4 );
+    npos -= ( n * 100 );
     updateMenu = true;
   }
 

@@ -43,4 +43,11 @@ public class Team {
     return Players.size();
   }
   
+  public void checkSelectedPlayer(){
+    Enumeration<Integer> enumKey = Players.keys();
+    while(enumKey.hasMoreElements()) {
+      Player tempPlayer = Players.get(enumKey.nextElement());
+      tempPlayer.selectedPlayer();
+    }
+  }
 }

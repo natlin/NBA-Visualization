@@ -22,9 +22,16 @@ List<String> l;
 int maxMoment = -1;
 int gameid = 0;
 
+int homeTeam = -1;
+int visitorTeam = -1;
+
+PFont vsFont;
+
 int xOffset =560;
 int yOffset = 200;
 float scaleFactor = 0.75;
+
+int vsScreenCounter = 0;
 
 Player Ball;
 
@@ -43,8 +50,12 @@ boolean isPlaying = false;
 
 PFont f1, f2;
 
+PImage homeImg;
+PImage visitorImg;
+
 HScrollbar hs1;
 ControlP5 cp5;
+DisplayStats displayData;
 
 void setup()
 {
@@ -61,6 +72,7 @@ void setup()
   f2 = createFont("Helvetica", 12);
   
   l = new ArrayList<String>();
+  displayData = new DisplayStats();
   cp5 = new ControlP5(this);
   hs1 = new HScrollbar(0, height - 20, width, 30, 10);
   
@@ -110,7 +122,6 @@ void setup()
 
 
 int moment = 0;
-int teamRed = -1;
 void draw()
 {
   background(255, 255, 255);
@@ -121,24 +132,19 @@ void draw()
     try{
       row = oneEventTable.getRow(i);
       teamID = row.getInt(TEAMID);
-      if(teamRed < 0){
-        teamRed = teamID;
-      }
     }
     catch(Exception e){
       break;
     }
     if(teamID < 0){
       Ball.update(row.getFloat(XPOS), row.getFloat(YPOS));
+      displayData.update(row);
       Ball.draw();
     }
     else {
       Team tempTeam = Teams.get(teamID);
       Player tempPlayer = tempTeam.Players.get(row.getInt(PLAYERID));
       tempPlayer.update(row.getFloat(XPOS), row.getFloat(YPOS));
-      /*if(teamRed == teamID){
-        tempPlayer.changeColor();
-      }*/
       tempPlayer.draw();
     }
   }
@@ -147,8 +153,37 @@ void draw()
     hs1.moveToMoment();
   }
   
+  /*if(homeTeam != -1 && visitorTeam != -1){
+    Team tempTeam = Teams.get(homeTeam);
+    tempTeam.checkSelectedPlayer();
+    tempTeam = Teams.get(visitorTeam);
+    tempTeam.checkSelectedPlayer();
+  }*/
+  if(gameid != 0){
+    displayData.draw();
+  }
   hs1.update();
   hs1.display();
+  if(vsScreenCounter > 0){
+    fill(255,255,255,215);
+    rect(0,0,1600,900);
+    
+    float tempXCenter = scaleFactor*(1504) / 2.0;
+    float tempXOffset = scaleFactor*(0 + xOffset);
+    float tempYCenter = scaleFactor*(800) / 2.0;
+    float tempYOffset = scaleFactor*(0 + yOffset);
+    
+    imageMode(CENTER);
+    image(homeImg, tempXCenter + tempXOffset - 300, tempYCenter + tempYOffset);
+    imageMode(CENTER);
+    image(visitorImg, tempXCenter + tempXOffset + 300, tempYCenter + tempYOffset);
+    fill(0);
+    textAlign(CENTER,CENTER);
+    textFont(vsFont);
+    text("VS", tempXCenter + tempXOffset, tempYCenter + tempYOffset);
+    
+    vsScreenCounter--;
+  }
 }
 
 void drawCourt(){ // offset
@@ -255,9 +290,18 @@ void loadOneGame(int id){
   //sketchPath("/data/games/0041400101");
   //gameid = 41400101;
   gameid = id;
+  TableRow tempRow = gamesTable.findRow(String.valueOf(id), "gameid");
+  homeTeam = tempRow.getInt("hometeamid");
+  visitorTeam = tempRow.getInt("visitorteamid");
   final File folder = new File(sketchPath("/data/games/00" + gameid + "/"));
   listFilesForFolder(folder);
   eventCount = gameEvents.iterator();
+  Team tempHomeTeam = Teams.get(homeTeam);
+  Team tempVisitorTeam = Teams.get(visitorTeam);
+  homeImg = loadImage("/icons/" + tempHomeTeam.abbreviation + ".png");
+  visitorImg = loadImage("/icons/" + tempVisitorTeam.abbreviation + ".png");
+  vsFont = loadFont("fonts/AgencyFB-Bold-52.vlw");
+  vsScreenCounter = 30;
   loadOneEvent();
 }
 
