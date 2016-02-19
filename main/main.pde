@@ -58,6 +58,9 @@ PFont f1, f2;
 PImage homeImg;
 PImage visitorImg;
 
+PImage smallHomeImg;
+PImage smallVisitorImg;
+
 HScrollbar hs1;
 ControlP5 cp5;
 DisplayStats displayData;
@@ -108,10 +111,10 @@ void setup()
      ;
   cp5.get(ScrollableList.class, "games").close();
   
-  PImage[] imgs = {loadImage("icons/button_a.png"),loadImage("icons/button_b.png"),loadImage("icons/button_c.png"),loadImage("icons/button_d.png")};
+  PImage[] imgs = {loadImage("icons/button_a2.png"),loadImage("icons/button_b2.png"),loadImage("icons/button_c2.png"),loadImage("icons/button_d2.png")};
   cp5.addButton("play")
      //.setValue(128)
-     .setPosition(10,522)
+     .setPosition(125,522)
      .setImages(imgs)
      .setSwitch(true)
      .setOff()
@@ -121,7 +124,7 @@ void setup()
   PImage[] imgs2 = {loadImage("icons/next_a.png"),loadImage("icons/next_b.png"),loadImage("icons/next_c.png")};
   cp5.addButton("nextEvent")
      //.setValue(1)
-     .setPosition(82,522)
+     .setPosition(205,522)
      .setImages(imgs2)
      //.setSwitch(true)
      //.setOff()
@@ -135,6 +138,10 @@ int moment = 0;
 void draw()
 {
   background(255, 255, 255);
+  fill(0,140);
+  rect(380,0,5,860);
+  fill(0,40);
+  rect(0,0,380,860);
   drawCourt();
   for(int i = moment * 11; i < (moment + 1) * 11; i++) {
     TableRow row;
@@ -148,6 +155,7 @@ void draw()
     }
     if(teamID < 0){
       Ball.update(row.getFloat(XPOS), row.getFloat(YPOS));
+      Ball.setZ(row.getFloat(HEIGHT));
       displayData.update(row);
       Ball.draw();
     }
@@ -172,11 +180,18 @@ void draw()
   if(gameid != 0){
     displayData.draw();
   }
+  if(homeTeam>0){
+    imageMode(CENTER);
+    image(smallHomeImg, 90, 468);
+    imageMode(CENTER);
+    image(smallVisitorImg, 270, 468);
+  }
+  
   hs1.update();
   hs1.display();
   if(vsScreenCounter > 0){
     fill(255,255,255,215);
-    rect(0,0,1600,900);
+    rect(385,0,1600,860);
     
     imageMode(CENTER);
     image(homeImg, tempXCenter + tempXOffset - 300, tempYCenter + tempYOffset);
@@ -193,7 +208,8 @@ void draw()
 
 void drawCourt(){ // offset
   //scale by 16 per feet w/o scaleFactor
-  fill(255,233,92);
+  //fill(255,233,92); //OLD COURT COLOR
+  fill(#FFEF85);
   stroke(0,0,0);
   strokeWeight(1);
   ellipseMode(CENTER);
@@ -219,7 +235,8 @@ void drawCourt(){ // offset
   fill (0);                        // net color 
   ellipse(scaleFactor*(84+xOffset), scaleFactor*(400 + yOffset), scaleFactor*(24), scaleFactor*(24));    // left net
   ellipse (scaleFactor*(1504+xOffset - 84), scaleFactor*(400 + yOffset), scaleFactor*(24), scaleFactor*(24));      // right net
-  fill (255,233,92);                     // fill
+  //fill (255,233,92);                     // fill half circle color
+  fill(#FFEF85);
   arc (scaleFactor*(305+xOffset), scaleFactor*(400 + yOffset), scaleFactor*(192), scaleFactor*(192), -HALF_PI, HALF_PI);    // tipoff free throw area left
   arc (scaleFactor*(1504+xOffset-304), scaleFactor*(400 + yOffset), scaleFactor*(192), scaleFactor*(192), HALF_PI, PI+HALF_PI);      // tipoff  free throw right
 }
@@ -307,7 +324,11 @@ void loadOneGame(int id){
   Team tempHomeTeam = Teams.get(homeTeam);
   Team tempVisitorTeam = Teams.get(visitorTeam);
   homeImg = loadImage("/icons/" + tempHomeTeam.abbreviation + ".png");
+  smallHomeImg = homeImg.copy();
+  smallHomeImg.resize(0,60);
   visitorImg = loadImage("/icons/" + tempVisitorTeam.abbreviation + ".png");
+  smallVisitorImg = visitorImg.copy();
+  smallVisitorImg.resize(0,60);
   vsFont = loadFont("fonts/AgencyFB-Bold-52.vlw");
   vsScreenCounter = 30;
   loadOneEvent();
@@ -344,7 +365,17 @@ void loadOneEvent() {
   
   oneEventTable = loadTable("/data/games/00" + gameid + "/" + (String)eventCount.next());
   //oneEventTable = loadTable("data/games/0041400101/2.csv");
-  isPlaying = true;
+  for(TableRow row : oneEventTable.rows()){
+    int tempTeamID = row.getInt(TEAMID);
+    if(tempTeamID<0){
+      continue;
+    }
+    Team tempTeam = Teams.get(tempTeamID);
+    Player tempPlayer = tempTeam.Players.get(row.getInt(PLAYERID));
+    tempPlayer.preprocess(row.getFloat(GAMECLOCK), row.getFloat(XPOS), row.getFloat(YPOS), row.getInt(MOMENT));
+  }
+  
   TableRow row = oneEventTable.getRow(oneEventTable.getRowCount() - 1);
   maxMoment = row.getInt(MOMENT);
+  isPlaying = true;
 }

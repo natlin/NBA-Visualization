@@ -41,14 +41,37 @@ public class DisplayStats {
   public void draw() {
     drawGameClock();
     if(isDispPlayer){
-      image(webImg, 10, 600);
+      imageMode(CORNERS);
+      image(webImg, 75, 600);
+      textAlign(CENTER,TOP);
+      textFont(vsFont,32);
+      fill(0);
+      text(dispPlayer.jerseynumber+"  "+dispPlayer.firstname+" "+dispPlayer.lastname+",  "+dispPlayer.position, 190, 795);
+      fill(0,60);
+      strokeWeight(1);
+      stroke(255);
+      ellipse(scaleFactor*(dispPlayer.xpos*16 + xOffset), scaleFactor*(dispPlayer.ypos*16 + yOffset), scaleFactor*(40), scaleFactor*(40));
+      stroke(dispPlayer.strokeColor);
+      strokeWeight(scaleFactor*(5));
+      fill(dispPlayer.dispColor);
+      ellipse(scaleFactor*(dispPlayer.xpos*16 + xOffset), scaleFactor*(dispPlayer.ypos*16 + yOffset), scaleFactor*(20), scaleFactor*(20));
+      
+      //Show total traveled distance
+      textAlign(LEFT,TOP);
+      textFont(vsFont,24);
+      fill(0);
+      //String.format("%.3f%n", dispPlayer.distanceTraveled.get(moment));
+      text("Total Distance Traveled: " + String.format("%.3f", dispPlayer.distanceTraveled.get(moment)), tempXOffset + tempXCenter, tempYOffset + scaleFactor*(800) + 10);
+      text(String.format("%63s","ft"), tempXOffset + tempXCenter, tempYOffset + scaleFactor*(800) + 10);
+      text("Average Speed: " + String.format("%.3f", dispPlayer.averageSpeed.get(moment)), tempXOffset + tempXCenter, tempYOffset + scaleFactor*(800) + 10 + 24);
+      text(String.format("%50s","ft/sec"), tempXOffset + tempXCenter, tempYOffset + scaleFactor*(800) + 10 + 24);
     }
   }
   
   public void setPlayerStats(Player tempPlayer){
     isDispPlayer = true;
     dispPlayer = tempPlayer;
-    webImg = loadImage(url + dispPlayer.firstname.toLowerCase() + "_" + dispPlayer.lastname.toLowerCase() + ".png");
+    webImg = loadImage(url + dispPlayer.firstname.toLowerCase().replaceAll("[^\\p{Alpha}]", "") + "_" + dispPlayer.lastname.toLowerCase().replaceAll("[^\\p{Alpha}]", "") + ".png");
   }
   
   public void drawShotClock() {
@@ -58,8 +81,21 @@ public class DisplayStats {
     quad(scaleFactor * xOffset,20,scaleFactor * xOffset + 128,20,scaleFactor * xOffset + 128,120,scaleFactor * xOffset,120);
   }
   
+  public void drawPeriod() {
+    fill(0);
+    strokeWeight(4);
+    stroke(0,69,162);
+    //quad(scaleFactor * xOffset+scaleFactor*(1504),20,scaleFactor * xOffset + 128,20,scaleFactor * xOffset - 128 + scaleFactor*(1504),120,scaleFactor * xOffset,120);
+    quad(scaleFactor * xOffset+scaleFactor*(1504),20,scaleFactor * xOffset - 128 +scaleFactor*(1504),20,scaleFactor * xOffset - 128 + scaleFactor*(1504),120,scaleFactor * xOffset+scaleFactor*(1504),120);
+    textFont(hightech,75);
+    fill(#00FF22);
+    textAlign(CENTER);
+    text(period,scaleFactor * xOffset - 59 +scaleFactor*(1504),98);
+  }
+  
   public void drawGameClock() {
     drawShotClock();
+    drawPeriod();
     fill(0);
     strokeWeight(4);
     stroke(0,69,162);
