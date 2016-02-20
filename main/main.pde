@@ -341,22 +341,27 @@ void loadOneGame(int id){
   //sketchPath("/data/games/0041400101");
   //gameid = 41400101;
   gameid = id;
-  TableRow tempRow = gamesTable.findRow(String.valueOf(id), "gameid");
-  homeTeam = tempRow.getInt("hometeamid");
-  visitorTeam = tempRow.getInt("visitorteamid");
-  final File folder = new File(sketchPath("/data/games/00" + gameid + "/"));
-  listFilesForFolder(folder);
-  eventCount = gameEvents.iterator();
-  Team tempHomeTeam = Teams.get(homeTeam);
-  Team tempVisitorTeam = Teams.get(visitorTeam);
-  homeImg = loadImage(sketchPath()+"/icons/" + tempHomeTeam.abbreviation + ".png");
-  smallHomeImg = homeImg.copy();
-  smallHomeImg.resize(0,60);
-  visitorImg = loadImage(sketchPath()+"/icons/" + tempVisitorTeam.abbreviation + ".png");
-  smallVisitorImg = visitorImg.copy();
-  smallVisitorImg.resize(0,60);
-  vsScreenCounter = 39;
-  loadOneEvent();
+  TableRow tempRow;
+  try{
+    tempRow = gamesTable.findRow(String.valueOf(id), "gameid");
+    homeTeam = tempRow.getInt("hometeamid");
+    visitorTeam = tempRow.getInt("visitorteamid");
+    final File folder = new File(sketchPath("/data/games/00" + gameid + "/"));
+    listFilesForFolder(folder);
+    eventCount = gameEvents.iterator();
+    Team tempHomeTeam = Teams.get(homeTeam);
+    Team tempVisitorTeam = Teams.get(visitorTeam);
+    homeImg = loadImage(sketchPath()+"/icons/" + tempHomeTeam.abbreviation + ".png");
+    smallHomeImg = homeImg.copy();
+    smallHomeImg.resize(0,60);
+    visitorImg = loadImage(sketchPath()+"/icons/" + tempVisitorTeam.abbreviation + ".png");
+    smallVisitorImg = visitorImg.copy();
+    smallVisitorImg.resize(0,60);
+    vsScreenCounter = 39;
+    loadOneEvent();
+  }
+  catch(Exception e){
+  }
 }
 
 void loadOneEvent() {
@@ -388,7 +393,11 @@ void loadOneEvent() {
   eventCount.next();
   eventCount.next();*/
   
-  oneEventTable = loadTable(sketchPath()+"/data/games/00" + gameid + "/" + (String)eventCount.next());
+  try{
+    oneEventTable = loadTable(sketchPath()+"/data/games/00" + gameid + "/" + (String)eventCount.next());
+  }
+  catch(Exception e){
+  }
   //oneEventTable = loadTable("data/games/0041400101/2.csv");
   for(TableRow row : oneEventTable.rows()){
     int tempTeamID = row.getInt(TEAMID);

@@ -24,6 +24,8 @@ Please note: If processing says "No library found for ControlP5" please go to th
 
 Explanation
 ===========
+Note: This runs perfectly fine on Windows 64 bit machines. I do not own a Mac and thus do not know if it works on apple computers.
+
 Note: The shotclock and the gameclock display rounded up values
 
 Note: Everything in the zip file should be at the same level. There is an attached picture, directory.png which shows how the files should be arranged (there all of the files go inside of a folder called main)
