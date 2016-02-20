@@ -25,7 +25,7 @@ public class DisplayStats {
   
   public DisplayStats(){ // constructor
   url = "http://i.cdn.turner.com/nba/nba/.element/img/2.0/sect/statscube/players/large/";
-  hightech = loadFont(sketchPath()+"fonts/LCD5x8H-48.vlw");
+  hightech = loadFont(sketchPath()+"/fonts/LCD5x8H-48.vlw");
   shotClock = 0;
   gameClock = 0;
   period = 0;
