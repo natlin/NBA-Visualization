@@ -70,6 +70,10 @@ void setup()
   //frameRate(150);
   size(1600, 900);
   background(255, 255, 255);
+  homeImg = createImage(10,10,RGB);
+  visitorImg = createImage(10,10,RGB);
+  smallHomeImg = createImage(10,10,RGB);
+  smallVisitorImg = createImage(10,10,RGB);
   Ball = new Player();
   drawCourt();
   loadTeam();
