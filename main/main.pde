@@ -399,5 +399,6 @@ void loadOneEvent() {
   
   TableRow row = oneEventTable.getRow(oneEventTable.getRowCount() - 1);
   maxMoment = row.getInt(MOMENT);
+  displayData.isDispPlayer = false;
   isPlaying = true;
 }

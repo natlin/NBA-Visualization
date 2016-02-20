@@ -61,6 +61,8 @@ As the animations of the basketball players play out, there are a few things you
 
 Selecting a player will highlight their circle with a transparent circle around them, display their picture in the left sidebar along with their Jersey number, name, and position. A few statistics will show up under the basketball court as well (Total distance traveled, average speed, distance from the ball). The existing statistic of ball possession will still be displayed, but it will be greyed out to draw focus towards the player statistics instead. You can deselect a player by selecting the highlighted circle again. Only one player can be selected at a time.
 
+Note: The player pictures are taken from a URL on the web, so you need internet in order to display their pictures
+
 The slider is attached to the moments. The slider will automatically progress as the event animates. When clicking on the slider, the moments will stop incrementing and you can drag the slider to whatever moment you would like.
 
 The Pause button will pause the animation. This is useful to select players sometimes, since it might be difficult to select a player while they are moving.
@@ -73,8 +75,28 @@ I fulfilled the requirements of the assignment and the reasoning is as follows:
 
 1. This was fulfilled because you can select an event via the dropdown list and animate it on the basketball court
 
-2. This was fulfilled by displaying the ball possession statistic. You can further see other information about the event by clicking on the players and displaying their personal information. Also, you can see which teams are playing in the event via the splash screen as well as the smaller sized icons underneath the dropdown list
+2. This was fulfilled by displaying the ball possession statistic. You can further see other information about the event by clicking on the players and displaying their statistics as well. Also, you can see which teams are playing in the event via the splash screen as well as the smaller sized icons underneath the dropdown list
 
 3. This was fulfilled by the slider on the bottom of the screen, allowing you to move your animations and statistics to a particular point of time
 
 4. This was fulfilled by selecting a player. This will display their image, name, jersey number, and position. This also calculates and displays other statistics as well such as their average speed and distance from the ball.
+
+
+I chose the MenuList to select the teams because I wanted a way to select which event to play based on the team. The MenuList was the easiest way to accomplish this because it held an image and text fields for the team's name, abbreviation, and team ID. After this, the dropdown list would appear. I had chosen a dropdown list because that is the easiest way to display the games, considering how many of them there are. It would not be very feasable to display them in an unscrollable manner. The basketball court was drawn manually by looking at the dimensions of a basketball court and scaling them to turn them into pixel sizes. I used ellipses to display the characters because an ellipse contains a stroke and a fill. Thus, I was able to have the players be two colors to represent their team colors.
+
+Conclusions
+===========
+
+Insights
+--------
+Some insights that cannot be gleamed from the dataset alone without further calculation:
+* Total distance traveled per player over the course of an event
+* Average speed of a player over the course of an event
+* Player distance from the basketball at each moment of an event
+* Who is in possession of the ball
+
+Something interesting that I discovered was that some of the events seemed to be duplicates. The conclusion I came up for this was that the NBA game statistics are based off a video recording, and the duplicates were from when they were doing playbacks of a particular event in a game.
+
+Extra Credit
+------------
+* Potentially for the design of the visualization
