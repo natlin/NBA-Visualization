@@ -98,7 +98,7 @@ void setup()
     String headline = row.getString("abbreviation");
     String copy = row.getString("teamid");
     
-    m.addItem(makeItem(headline, subline, copy, loadImage("/icons/" + headline + "2.png")));
+    m.addItem(makeItem(headline, subline, copy, loadImage(sketchPath()+"/icons/" + headline + "2.png")));
   }
 
   cp5.addScrollableList("games")
@@ -111,7 +111,7 @@ void setup()
      ;
   cp5.get(ScrollableList.class, "games").close();
   
-  PImage[] imgs = {loadImage("icons/button_a2.png"),loadImage("icons/button_b2.png"),loadImage("icons/button_c2.png"),loadImage("icons/button_d2.png")};
+  PImage[] imgs = {loadImage(sketchPath()+"/icons/button_a2.png"),loadImage(sketchPath()+"/icons/button_b2.png"),loadImage(sketchPath()+"/icons/button_c2.png"),loadImage(sketchPath()+"/icons/button_d2.png")};
   cp5.addButton("play")
      //.setValue(128)
      .setPosition(125,522)
@@ -121,7 +121,7 @@ void setup()
      .updateSize()
      ;
      
-  PImage[] imgs2 = {loadImage("icons/next_a.png"),loadImage("icons/next_b.png"),loadImage("icons/next_c.png")};
+  PImage[] imgs2 = {loadImage(sketchPath()+"/icons/next_a.png"),loadImage(sketchPath()+"/icons/next_b.png"),loadImage(sketchPath()+"/icons/next_c.png")};
   cp5.addButton("nextEvent")
      //.setValue(1)
      .setPosition(205,522)
@@ -266,8 +266,8 @@ Hashtable<Integer, Team> Teams = new Hashtable<Integer, Team>();
 
 void loadTeam() {
   int i=0;
-  teamTable = loadTable("data/team.csv", "header");
-  colorTable = loadTable("color.csv", "header");
+  teamTable = loadTable(sketchPath()+"/data/team.csv", "header");
+  colorTable = loadTable(sketchPath()+"/color.csv", "header");
 
   for (TableRow row : teamTable.rows()) {
     TableRow colorRow = colorTable.getRow(i);
@@ -282,7 +282,7 @@ void loadTeam() {
 
 void loadPlayers() {
   
-  playerTable = loadTable("data/players.csv", "header");
+  playerTable = loadTable(sketchPath()+"/data/players.csv", "header");
 
   for (TableRow row : playerTable.rows()) {
     
@@ -297,7 +297,7 @@ void loadPlayers() {
 }
 
 void loadGames() {
-  gamesTable = loadTable("data/games.csv", "header");
+  gamesTable = loadTable(sketchPath()+"/data/games.csv", "header");
 }
 
 void listFilesForFolder(final File folder) {
@@ -344,13 +344,13 @@ void loadOneGame(int id){
   eventCount = gameEvents.iterator();
   Team tempHomeTeam = Teams.get(homeTeam);
   Team tempVisitorTeam = Teams.get(visitorTeam);
-  homeImg = loadImage("/icons/" + tempHomeTeam.abbreviation + ".png");
+  homeImg = loadImage(sketchPath()+"/icons/" + tempHomeTeam.abbreviation + ".png");
   smallHomeImg = homeImg.copy();
   smallHomeImg.resize(0,60);
-  visitorImg = loadImage("/icons/" + tempVisitorTeam.abbreviation + ".png");
+  visitorImg = loadImage(sketchPath()+"/icons/" + tempVisitorTeam.abbreviation + ".png");
   smallVisitorImg = visitorImg.copy();
   smallVisitorImg.resize(0,60);
-  vsFont = loadFont("fonts/AgencyFB-Bold-52.vlw");
+  vsFont = loadFont(sketchPath()+"/fonts/AgencyFB-Bold-52.vlw");
   vsScreenCounter = 39;
   loadOneEvent();
 }
@@ -384,7 +384,7 @@ void loadOneEvent() {
   eventCount.next();
   eventCount.next();*/
   
-  oneEventTable = loadTable("/data/games/00" + gameid + "/" + (String)eventCount.next());
+  oneEventTable = loadTable(sketchPath()+"/data/games/00" + gameid + "/" + (String)eventCount.next());
   //oneEventTable = loadTable("data/games/0041400101/2.csv");
   for(TableRow row : oneEventTable.rows()){
     int tempTeamID = row.getInt(TEAMID);

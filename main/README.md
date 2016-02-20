@@ -20,9 +20,13 @@ ControlP5
 * ControlP5 was used as a base in order to display much of the user input features, mainly the MenuList of teams and the dropdown list
 * The actions that occur after user input are all coded by me.
 
+Please note: If processing says "No library found for ControlP5" please go to the code folder and drag the .jar into the processing application to add it to the sketch, or if loading the visualization via eclipse, add the .jar into the class path.
+
 Explanation
 ===========
 Note: The shotclock and the gameclock display rounded up values
+
+Note: Everything in the zip file should be at the same level. There is an attached picture, directory.png which shows how the files should be arranged (there all of the files go inside of a folder called main)
 
 Main
 ----
