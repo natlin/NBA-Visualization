@@ -24,7 +24,7 @@ Please note: If processing says "No library found for ControlP5" please go to th
 
 Explanation
 ===========
-Note: This runs perfectly fine on Windows 64 bit machines. I do not own a Mac and thus do not know if it works on apple computers.
+Note: This runs perfectly fine on Windows 64 bit machines. This mayor may not run on Mac computers because of the loadOneGame and loadOneEvent functions which use windows style directory paths.
 
 Note: The shotclock and the gameclock display rounded up values
 

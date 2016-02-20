@@ -346,7 +346,7 @@ void loadOneGame(int id){
     tempRow = gamesTable.findRow(String.valueOf(id), "gameid");
     homeTeam = tempRow.getInt("hometeamid");
     visitorTeam = tempRow.getInt("visitorteamid");
-    final File folder = new File(sketchPath("/data/games/00" + gameid + "/"));
+    final File folder = new File(sketchPath()+"/data/games/00" + gameid + "/");
     listFilesForFolder(folder);
     eventCount = gameEvents.iterator();
     Team tempHomeTeam = Teams.get(homeTeam);
