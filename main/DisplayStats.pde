@@ -69,13 +69,13 @@ public class DisplayStats {
       fill(0);
     }
     //String.format("%.3f%n", dispPlayer.distanceTraveled.get(moment));
-    Team nearestTeam = Teams.get(closestTeam);
-    Player nearestPlayer = nearestTeam.Players.get(closestPlayer);
-    //double distance = nearestPlayer.distanceToBall.get(moment);
-    
-    //text("Possession: " + String.format("%.3f", dispPlayer.distanceTraveled.get(moment)), tempXOffset, tempYOffset + scaleFactor*(800) + 10);
-    //text(String.format("%63s","ft"), tempXOffset, tempYOffset + scaleFactor*(800) + 10);
-    text("Possession: " + nearestTeam.abbreviation + "  " + nearestPlayer.firstname + " " + nearestPlayer.lastname+"  "+nearestPlayer.jerseynumber, tempXOffset + tempXCenter + 120, tempYOffset + scaleFactor*(800) + 10);
+    try{
+      Team nearestTeam = Teams.get(closestTeam);
+      Player nearestPlayer = nearestTeam.Players.get(closestPlayer);
+      text("Possession: " + nearestTeam.abbreviation + "  " + nearestPlayer.firstname + " " + nearestPlayer.lastname+"  "+nearestPlayer.jerseynumber, tempXOffset + tempXCenter + 120, tempYOffset + scaleFactor*(800) + 10);
+    }
+    catch(Exception e){
+    }
     //text(nearestTeam.abbreviation + "  " + nearestPlayer.firstname + " " + nearestPlayer.lastname, tempXOffset, tempYOffset + scaleFactor*(800) + 10 + 24);
     
     

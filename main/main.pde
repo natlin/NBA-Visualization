@@ -70,6 +70,7 @@ void setup()
   //frameRate(150);
   size(1600, 900);
   background(255, 255, 255);
+  vsFont = loadFont(sketchPath()+"/fonts/AgencyFB-Bold-52.vlw");
   homeImg = createImage(10,10,RGB);
   visitorImg = createImage(10,10,RGB);
   smallHomeImg = createImage(10,10,RGB);
@@ -354,7 +355,6 @@ void loadOneGame(int id){
   visitorImg = loadImage(sketchPath()+"/icons/" + tempVisitorTeam.abbreviation + ".png");
   smallVisitorImg = visitorImg.copy();
   smallVisitorImg.resize(0,60);
-  vsFont = loadFont(sketchPath()+"/fonts/AgencyFB-Bold-52.vlw");
   vsScreenCounter = 39;
   loadOneEvent();
 }
